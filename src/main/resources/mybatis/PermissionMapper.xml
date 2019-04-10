@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Permission">
+    <resultMap id="BaseResultMap" type="com.university.crm.bean.system.Permission">
+        <id column="permission_id" jdbcType="INTEGER" property="permissionID"/>
+        <result column="permission_name" jdbcType="VARCHAR" property="permissionName"/>
+        <result column="permission_state" jdbcType="INTEGER" property="permissionState"/>
+        <result column="permission_sign" jdbcType="VARCHAR" property="permissionSign"/>
+        <result column="menu_item" jdbcType="INTEGER" property="menuItem"/>
+        <result column="menu_url" jdbcType="VARCHAR" property="menuUrl"/>
+        <result column="parent_menu_id" jdbcType="INTEGER" property="parentMenuId"/>
+        <result column="menu_sort" jdbcType="INTEGER" property="menuSort"/>
+        <result column="log" jdbcType="INTEGER" property="log"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    `permission_id`, `permission_name`, `permission_state`, `permission_sign`, `menu_item`,
+    `menu_url`, `parent_menu_id`, `menu_sort`, `log`, `created_time`, `updated_time`
+  </sql>
+    <select id="findByPermissionSign" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from `Permission`
+        where `permission_sign` = #{permissionSign}
+    </select>
+    <select id="findByPermissionID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from `Permission`
+        where `permission_sign` = #{permissionID,jdbcType=INTEGER}
+    </select>
+
+    <select id="findPermissionByMenuIDCount" parameterType="java.lang.Integer" resultType="int">
+        select
+        count(1)
+        from `Permission`
+        where `parent_menu_id` = #{parentMenuID,jdbcType=INTEGER}
+    </select>
+    <delete id="deletePermission" parameterType="java.lang.Integer">
+        delete from `Permission`
+        where `permission_id` = #{permissionID,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insertPermission" parameterType="com.university.crm.bean.system.Permission">
+        insert into `Permission`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="permissionID != null">
+                `permission_id`,
+            </if>
+            <if test="permissionName != null">
+                `permission_name`,
+            </if>
+            <if test="permissionState != null">
+                `permission_state`,
+            </if>
+            <if test="permissionSign != null">
+                `permission_sign`,
+            </if>
+            <if test="menuItem != null">
+                `menu_item`,
+            </if>
+            <if test="menuUrl != null">
+                `menu_url`,
+            </if>
+            <if test="parentMenuID != null">
+                `parent_menu_id`,
+            </if>
+            <if test="menuSort != null">
+                `menu_sort`,
+            </if>
+            <if test="log != null">
+                `log`,
+            </if>
+            <if test="createdTime != null">
+                `created_time`,
+            </if>
+            <if test="updatedTime != null">
+                `updated_time`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="permissionID != null">
+                #{permissionID,jdbcType=INTEGER},
+            </if>
+            <if test="permissionName != null">
+                #{permissionName,jdbcType=VARCHAR},
+            </if>
+            <if test="permissionState != null">
+                #{permissionState,jdbcType=INTEGER},
+            </if>
+            <if test="permissionSign != null">
+                #{permissionSign,jdbcType=VARCHAR},
+            </if>
+            <if test="menuItem != null">
+                #{menuItem,jdbcType=INTEGER},
+            </if>
+            <if test="menuUrl != null">
+                #{menuUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="parentMenuID != null">
+                #{parentMenuID,jdbcType=INTEGER},
+            </if>
+            <if test="menuSort != null">
+                #{menuSort,jdbcType=INTEGER},
+            </if>
+            <if test="log != null">
+                #{log,jdbcType=INTEGER},
+            </if>
+            <if test="createdTime != null">
+                #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedTime != null">
+                #{updatedTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updatePermission" parameterType="com.university.crm.bean.system.Permission">
+        update `Permission`
+        <set>
+            <if test="permissionName != null">
+                `permission_name` = #{permissionName,jdbcType=VARCHAR},
+            </if>
+            <if test="permissionState != null">
+                `permission_state` = #{permissionState,jdbcType=INTEGER},
+            </if>
+            <if test="permissionSign != null">
+                `permission_sign` = #{permissionSign,jdbcType=VARCHAR},
+            </if>
+            <if test="menuItem != null">
+                `menu_item` = #{menuItem,jdbcType=INTEGER},
+            </if>
+            <if test="menuUrl != null">
+                `menu_url` = #{menuUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="parentMenuID != null">
+                `parent_menu_id` = #{parentMenuID,jdbcType=INTEGER},
+            </if>
+            <if test="menuSort != null">
+                `menu_sort` = #{menuSort,jdbcType=INTEGER},
+            </if>
+            <if test="log != null">
+                `log` = #{log,jdbcType=INTEGER},
+            </if>
+            <if test="createdTime != null">
+                `created_time` = #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedTime != null">
+                `updated_time` = #{updatedTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where `permission_id` = #{permissionID,jdbcType=INTEGER}
+    </update>
+</mapper>

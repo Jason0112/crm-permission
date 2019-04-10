@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Role">
+    <resultMap id="BaseResultMap" type="com.university.crm.bean.system.Role">
+        <id column="role_id" jdbcType="INTEGER" property="roleID"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="role_state" jdbcType="INTEGER" property="roleState"/>
+        <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    `role_id`, `role_name`, `role_state`, `CREATED_TIME`, `UPDATED_TIME`
+  </sql>
+    <select id="findRoleName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from `Role`
+        where `role_name` = #{roleName}
+    </select>
+    <delete id="deleteRole" parameterType="java.lang.Integer">
+    delete from `Role`
+    where `role_id` = #{roleID,jdbcType=INTEGER}
+  </delete>
+
+    <insert id="insertRole" parameterType="com.university.crm.bean.system.Role">
+        insert into `Role`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleID != null">
+                `role_id`,
+            </if>
+            <if test="roleName != null">
+                `role_name`,
+            </if>
+            <if test="roleState != null">
+                `role_state`,
+            </if>
+            <if test="createdTime != null">
+                `CREATED_TIME`,
+            </if>
+            <if test="updatedTime != null">
+                `UPDATED_TIME`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="roleName != null">
+                #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="roleState != null">
+                #{roleState,jdbcType=INTEGER},
+            </if>
+            <if test="createdTime != null">
+                #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedTime != null">
+                #{updatedTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateRole" parameterType="com.university.crm.bean.system.Role">
+        update `Role`
+        <set>
+            <if test="roleName != null">
+                `role_name` = #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="roleState != null">
+                `role_state` = #{roleState,jdbcType=INTEGER},
+            </if>
+            <if test="createdTime != null">
+                `CREATED_TIME` = #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedTime != null">
+                `UPDATED_TIME` = #{updatedTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where `role_id` = #{roleID,jdbcType=INTEGER}
+    </update>
+</mapper>

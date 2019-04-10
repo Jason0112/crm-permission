@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AccountRolePermission">
+    <resultMap id="RolePermissionRelation" type="com.alibaba.fastjson.JSONObject">
+        <id column="relation_id" jdbcType="INTEGER" property="relationID"/>
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="permission_id" jdbcType="INTEGER" property="permissionID"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="RolePermissionRelation_List">
+    `relation_id`, `role_id`, `permission_id`, `create_time`
+  </sql>
+    <select id="checkPermission" resultType="int">
+        SELECT count(1)
+    FROM Account a
+      INNER JOIN AccountRoleRelation ar ON a.account_id = ar.account_id
+      INNER JOIN Role r ON ar.role_id = r.role_id
+      INNER JOIN RolePermissionRelation rr ON r.role_id = rr.role_id
+      INNER JOIN Permission p ON rr.permission_id = p.permission_id
+    where a.account = #{account}
+      AND r.role_state = 1
+      AND a.state = 1
+      AND p.permission_state = 1
+      AND p.permission_sign = #{permissionSign}
+    </select>
+    <select id="findRolePermissionRelation" parameterType="java.lang.Integer" resultMap="RolePermissionRelation">
+        select
+        <include refid="RolePermissionRelation_List"/>
+        from `RolePermissionRelation`
+        where `relation_id` = #{relationID,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteRolePermissionRelation" parameterType="java.lang.Integer">
+    delete from `RolePermissionRelation`
+    where `relation_id` = #{relationID,jdbcType=INTEGER}
+  </delete>
+    <insert id="insertRolePermissionRelation">
+        insert into `RolePermissionRelation`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="relationID != null">
+                `relation_id`,
+            </if>
+            <if test="roleId != null">
+                `role_id`,
+            </if>
+            <if test="permissionID != null">
+                `permission_id`,
+            </if>
+            <if test="createTime != null">
+                `create_time`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="relationID != null">
+                #{relationID,jdbcType=INTEGER},
+            </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="permissionID != null">
+                #{permissionID,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <resultMap id="AccountRoleRelation" type="com.alibaba.fastjson.JSONObject">
+        <id column="relation_id" jdbcType="INTEGER" property="relationID"/>
+        <result column="account_id" jdbcType="INTEGER" property="accountID"/>
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="AccountRoleRelation_List">
+        `relation_id`, `account_id`, `role_id`, `create_time`
+    </sql>
+    <select id="findAccountRoleRelation" parameterType="java.lang.Integer" resultMap="AccountRoleRelation">
+        select
+        <include refid="AccountRoleRelation_List"/>
+        from `AccountRoleRelation`
+        where `relation_id` = #{relationID,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteAccountRoleRelation" parameterType="java.lang.Integer">
+        delete from `AccountRoleRelation`
+        where `relation_id` = #{relationID,jdbcType=INTEGER}
+    </delete>
+    <insert id="insertAccountRoleRelation">
+        insert into `AccountRoleRelation`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="relationID != null">
+                `relation_id`,
+            </if>
+            <if test="accountID != null">
+                `account_id`,
+            </if>
+            <if test="roleId != null">
+                `role_id`,
+            </if>
+            <if test="createTime != null">
+                `create_time`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="relationID != null">
+                #{relationID,jdbcType=INTEGER},
+            </if>
+            <if test="accountID != null">
+                #{accountID,jdbcType=INTEGER},
+            </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <resultMap id="MenuMap" type="com.alibaba.fastjson.JSONObject">
+        <result column="menu_id" property="menuID"/>
+        <result column="menu_name" property="menuName"/>
+        <collection property="permissionList" javaType="ArrayList" ofType="com.alibaba.fastjson.JSONObject">
+            <result column="permission_name" property="permissionName"/>
+            <result column="permission_sign" property="permissionSign"/>
+            <result column="menu_url" property="menuUrl"/>
+        </collection>
+    </resultMap>
+    <select id="findMenuList" resultMap="MenuMap">
+        SELECT DISTINCT
+          m.menu_id,
+          m.menu_name,
+          permission_name,
+          p.permission_sign,
+          p.menu_url,
+          m.menu_order,
+          p.menu_sort
+        FROM Account a
+          INNER JOIN AccountRoleRelation ar ON a.account_id = ar.account_id
+          INNER JOIN Role r ON ar.role_id = r.role_id
+          INNER JOIN RolePermissionRelation rr ON r.role_id = rr.role_id
+          INNER JOIN Permission p ON rr.permission_id = p.permission_id
+          LEFT JOIN Menu m ON p.parent_menu_id = m.menu_id
+        WHERE a.account = #{account}
+              AND r.role_state = 1
+              AND a.state = 1
+              AND p.permission_state = 1
+              AND p.menu_item = 1
+        ORDER BY m.menu_order DESC, p.menu_sort DESC
+    </select>
+</mapper>

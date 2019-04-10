@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ViewData">
+    <resultMap id="AccountTableMap" type="com.alibaba.fastjson.JSONObject">
+        <id column="account_id" jdbcType="INTEGER" property="accountID"/>
+        <result column="account" jdbcType="VARCHAR" property="account"/>
+        <result column="state" jdbcType="INTEGER" property="state"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIP"/>
+        <result column="last_login_time" jdbcType="VARCHAR" property="lastLoginTime"/>
+        <result column="department_sign" jdbcType="VARCHAR" property="departmentSign"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime"/>
+    </resultMap>
+    <select id="findAccountTableList" resultMap="AccountTableMap"
+            parameterType="com.university.crm.data.dto.search.AccountSearch">
+        SELECT
+        `account_id`, `account`, `state`, `remark`, `real_name`,`last_login_ip`, `last_login_time`, `department_sign`,
+        `created_time`, `updated_time`
+        from `Account`
+        <where>
+            <if test="realName != null">
+                AND `real_name` LIKE concat('%',#{realName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="account != null">
+                AND `account` LIKE concat('%',#{account,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="state != null">
+                AND `state` = #{state,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+
+    <resultMap id="DepartmentTableMap" type="com.alibaba.fastjson.JSONObject">
+        <id column="department_id" jdbcType="INTEGER" property="departmentId"/>
+        <result column="department_name" jdbcType="VARCHAR" property="departmentName"/>
+        <result column="department_sign" jdbcType="VARCHAR" property="departmentSign"/>
+        <result column="department_state" jdbcType="SMALLINT" property="departmentState"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="parent_sign" jdbcType="VARCHAR" property="parentSign"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime"/>
+    </resultMap>
+
+    <select id="findDepartmentTableList" resultMap="DepartmentTableMap"
+            parameterType="com.university.crm.data.dto.search.DepartmentSearch">
+        SELECT
+        `department_id`, `department_name`, `department_sign`, `department_state`, `remark`,
+        `parent_sign`, `created_time`, `updated_time`
+        from `Department`
+        <where>
+
+            <if test="departmentName != null">
+                AND `department_name` LIKE concat('%',#{departmentName,jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+    </select>
+
+    <resultMap id="PermissionTableMap" type="com.alibaba.fastjson.JSONObject">
+        <id column="permission_id" jdbcType="INTEGER" property="permissionID"/>
+        <result column="permission_name" jdbcType="VARCHAR" property="permissionName"/>
+        <result column="permission_state" jdbcType="INTEGER" property="permissionState"/>
+        <result column="permission_sign" jdbcType="VARCHAR" property="permissionSign"/>
+        <result column="menu_item" jdbcType="INTEGER" property="menuItem"/>
+        <result column="menu_url" jdbcType="VARCHAR" property="menuUrl"/>
+        <result column="parent_menu_id" jdbcType="INTEGER" property="parentMenuId"/>
+        <result column="menu_sort" jdbcType="INTEGER" property="menuSort"/>
+        <result column="log" jdbcType="INTEGER" property="log"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime"/>
+        <result column="menu_name" jdbcType="VARCHAR" property="menuName"/>
+    </resultMap>
+
+    <select id="findPermissionTableList" resultMap="PermissionTableMap"
+            parameterType="com.university.crm.data.dto.search.PermissionSearch">
+        SELECT
+        `permission_id`, `permission_name`, `permission_state`, `permission_sign`, `menu_item`,
+        `menu_url`, `parent_menu_id`, `menu_sort`, `log`, p.`created_time`, p.`updated_time`,m.`menu_name`
+        from `Permission` p
+        LEFT JOIN `Menu` m on p.`parent_menu_id` = m.`menu_id`
+        <where>
+            <if test="permissionName != null">
+                AND `permission_name` LIKE concat('%',#{permissionName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="permissionState != null">
+                AND `permission_state` = #{permissionState,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+    <resultMap id="RoleTableMap" type="com.alibaba.fastjson.JSONObject">
+        <id column="role_id" jdbcType="INTEGER" property="roleID"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="role_state" jdbcType="INTEGER" property="roleState"/>
+        <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime"/>
+    </resultMap>
+
+    <select id="findRoleTableList" resultMap="RoleTableMap"
+            parameterType="com.university.crm.data.dto.search.RoleSearch">
+        SELECT
+        `role_id`, `role_name`, `role_state`, `CREATED_TIME`, `UPDATED_TIME`
+        from `Role`
+        <where>
+            <if test="roleName != null">
+                AND `role_name` LIKE concat('%',#{roleName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="roleState != null">
+                AND `role_state` = #{roleState,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+    <resultMap id="MenuTableMap" type="com.alibaba.fastjson.JSONObject">
+        <id column="menu_id" jdbcType="INTEGER" property="menuID"/>
+        <result column="menu_name" jdbcType="VARCHAR" property="menuName"/>
+        <result column="system_sign" jdbcType="VARCHAR" property="systemSign"/>
+        <result column="menu_order" jdbcType="INTEGER" property="menuOrder"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime"/>
+    </resultMap>
+
+    <select id="findMenuTableList" resultMap="MenuTableMap"
+            parameterType="com.university.crm.data.dto.search.MenuSearch">
+        SELECT
+        `menu_id`, `menu_name`, `system_sign`, `menu_order`, `remark`, `created_time`, `updated_time`
+        from `Menu`
+        <where>
+            <if test="menuName != null">
+                AND `menu_name` LIKE concat('%',#{menuName,jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+    </select>
+</mapper>

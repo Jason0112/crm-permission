@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Department">
+    <resultMap id="BaseResultMap" type="com.university.crm.bean.system.Department">
+        <id column="department_id" jdbcType="INTEGER" property="departmentId"/>
+        <result column="department_name" jdbcType="VARCHAR" property="departmentName"/>
+        <result column="department_sign" jdbcType="VARCHAR" property="departmentSign"/>
+        <result column="department_state" jdbcType="SMALLINT" property="departmentState"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="parent_sign" jdbcType="VARCHAR" property="parentSign"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    `department_id`, `department_name`, `department_sign`, `department_state`, `remark`, 
+    `parent_sign`, `created_time`, `updated_time`
+  </sql>
+    <select id="findDepartmentByID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from `Department`
+        where `department_id` = #{departmentId,jdbcType=INTEGER}
+    </select>
+    <select id="findDepartmentBySign" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from `Department`
+        where `department_sign` = #{departmentSign}
+    </select>
+    <delete id="deleteDepartment" parameterType="java.lang.Integer">
+    delete from `Department`
+    where `department_id` = #{departmentId,jdbcType=INTEGER}
+  </delete>
+
+    <insert id="insertDepartment" parameterType="com.university.crm.bean.system.Department">
+
+        insert into `Department`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="departmentId != null">
+                `department_id`,
+            </if>
+            <if test="departmentName != null">
+                `department_name`,
+            </if>
+            <if test="departmentSign != null">
+                `department_sign`,
+            </if>
+            <if test="departmentState != null">
+                `department_state`,
+            </if>
+            <if test="remark != null">
+                `remark`,
+            </if>
+            <if test="parentSign != null">
+                `parent_sign`,
+            </if>
+            <if test="createdTime != null">
+                `created_time`,
+            </if>
+            <if test="updatedTime != null">
+                `updated_time`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="departmentId != null">
+                #{departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="departmentName != null">
+                #{departmentName,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentSign != null">
+                #{departmentSign,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentState != null">
+                #{departmentState,jdbcType=SMALLINT},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="parentSign != null">
+                #{parentSign,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedTime != null">
+                #{updatedTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateDepartment" parameterType="com.university.crm.bean.system.Department">
+        update `Department`
+        <set>
+            <if test="departmentName != null">
+                `department_name` = #{departmentName,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentSign != null">
+                `department_sign` = #{departmentSign,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentState != null">
+                `department_state` = #{departmentState,jdbcType=SMALLINT},
+            </if>
+            <if test="remark != null">
+                `remark` = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="parentSign != null">
+                `parent_sign` = #{parentSign,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                `created_time` = #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedTime != null">
+                `updated_time` = #{updatedTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where `department_id` = #{departmentId,jdbcType=INTEGER}
+    </update>
+
+</mapper>

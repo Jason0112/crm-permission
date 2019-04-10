@@ -1,0 +1,74 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
+
+    <defaultCache
+            maxElementsInMemory="10000"
+            maxElementsOnDisk="0"
+            eternal="false"
+            timeToIdleSeconds="0"
+            timeToLiveSeconds="3600"
+            overflowToDisk="false"
+            memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="ACCOUNT_PERMISSION"
+           maxElementsInMemory="300"
+           eternal="false"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="0"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="ACCOUNT_DATA"
+           maxElementsInMemory="300"
+           eternal="false"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToLiveSeconds="3600"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="ACCOUNT_IDS"
+           maxElementsInMemory="300"
+           eternal="false"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="3600"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="RESUME_IDS"
+           maxElementsInMemory="300"
+           eternal="false"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="0"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="DEPARTMENT_ACCOUNT"
+           maxElementsInMemory="20"
+           eternal="false"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToLiveSeconds="300"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="SD_TOP_LIST"
+           maxElementsInMemory="200"
+           eternal="false"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="14400"
+           timeToLiveSeconds="0"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="ADVISOR_INFO"
+           maxElementsInMemory="300"
+           eternal="false"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="3600"
+           memoryStoreEvictionPolicy="LRU"/>
+
+</ehcache>
